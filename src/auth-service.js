@@ -77,8 +77,8 @@ function createAuthService(database) {
     seedAdmin(emailInput, password) {
       const email = normalizeEmail(emailInput);
       if (!email && !password) return;
-      if (!validEmail(email) || typeof password !== "string" || password.length < 12) {
-        throw new Error("Set a valid ADMIN_EMAIL and an ADMIN_PASSWORD of at least 12 characters.");
+      if (!validEmail(email) || typeof password !== "string" || password.length < 8 || password.length > 128) {
+        throw new Error("Set a valid ADMIN_EMAIL and an ADMIN_PASSWORD between 8 and 128 characters.");
       }
       const existing = statements.findByEmail.get(email);
       if (existing) {

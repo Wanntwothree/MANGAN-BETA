@@ -21,6 +21,8 @@ let toastTimer;
 let activeMap = null;
 let detailLoadSequence = 0;
 let leafletPromise = null;
+let currentUser = null;
+let accountPromise = null;
 
 function visitorId() {
   const key = "mangan-beta-visitor";
@@ -171,7 +173,17 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 3600);
 }
 
-function openRestaurantDetails(id) {
+async function openRestaurantDetails(id) {
+  if (accountPromise) await accountPromise;
+  if (!currentUser) {
+    try {
+      sessionStorage.setItem("mangan-pending-detail", String(id));
+    } catch {
+      // Ignore storage failures and continue to the sign-in page.
+    }
+    window.location.assign("/login.html?next=/");
+    return;
+  }
   const restaurant = state.restaurants.find((item) => item.id === id);
   if (!restaurant) {
     showToast("That restaurant isn’t in the current list. Refresh and try again.");
@@ -204,7 +216,7 @@ function openRestaurantDetails(id) {
           <div id="weather-result" hidden></div>
         </section>
       </div>
-      <p class="demo-note"><span aria-hidden="true">✳</span> Beta preview — please confirm venue details before visiting.</p>
+      <p class="demo-note"><span aria-hidden="true">✳</span> Please confirm venue details before visiting.</p>
     </div>`;
   detailDialog.showModal();
   const sequence = ++detailLoadSequence;
@@ -546,6 +558,7 @@ async function loadAccount() {
   const logoutButton = document.querySelector("#logout-button");
   try {
     const { user } = await apiRequest("/api/auth/me");
+    currentUser = user || null;
     if (!user) return;
     accountLink.href = user.role === "admin" ? "/admin.html" : user.role === "owner" ? "/owner.html" : "/";
     accountLink.textContent = user.role === "admin" ? "Admin dashboard" :
@@ -579,5 +592,19 @@ document.addEventListener("keydown", (event) => {
   }
 });
 
+function resumePendingDetail() {
+  let pendingId;
+  try {
+    pendingId = sessionStorage.getItem("mangan-pending-detail");
+  } catch {
+    return;
+  }
+  if (!pendingId || !currentUser) return;
+  sessionStorage.removeItem("mangan-pending-detail");
+  const id = Number(pendingId);
+  if (Number.isSafeInteger(id)) openRestaurantDetails(id);
+}
+
 updateSavedCount();
-Promise.all([loadRestaurants(), loadFavorites(), loadAccount()]);
+accountPromise = loadAccount();
+Promise.all([loadRestaurants(), loadFavorites(), accountPromise]).then(resumePendingDetail);

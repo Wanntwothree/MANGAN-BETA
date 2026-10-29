@@ -48,12 +48,13 @@
 .status-pill.rejected, .status-pill.inactive { background: #f6e5df; color: #a24e3b; }
 .status-pill.active { background: #e3ede2; color: #3d6a4a; }
 .dashboard-empty { padding: 24px; color: var(--muted); font-size: 11px; text-align: center; }
+.feedback-empty { display: flex; grid-column: 1 / -1; align-items: center; justify-content: center; min-height: 140px; text-align: center; }
 .feedback-list { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
 .feedback-item { padding: 13px; border: 1px solid #ebe7df; background: #fffefa; }
 .feedback-item header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 7px; }
 .feedback-item strong { color: var(--green); font-size: 10px; text-transform: capitalize; }
 .feedback-item time { color: #92948c; font-size: 9px; }
-.feedback-item p { margin: 0; color: #5f685f; font-size: 10px; line-height: 1.6; overflow-wrap: anywhere; }
+.feedback-item p { margin: 0; color: #5f685f; font-size: 10px; line-height: 1.6; text-align: center; overflow-wrap: anywhere; }
 .dashboard-notice { margin: 0 0 20px; padding: 12px 14px; border-left: 3px solid var(--orange); background: #fbf2e5; color: #745638; font-size: 10px; line-height: 1.6; }
 
 @media (max-width: 680px) {

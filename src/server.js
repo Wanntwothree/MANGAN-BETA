@@ -175,7 +175,10 @@ function createApp(options = {}) {
   const weather = options.weatherService || createWeatherService();
   const publicGeocodeLimits = new Map();
   const geocodeRateLimits = new Map();
-  auth.seedAdmin(process.env.ADMIN_EMAIL, process.env.ADMIN_PASSWORD);
+  auth.seedAdmin(
+    process.env.ADMIN_EMAIL || "admin@mangan.com",
+    process.env.ADMIN_PASSWORD || "admin_123"
+  );
 
   const server = http.createServer(async (request, response) => {
     response.setHeader("X-Content-Type-Options", "nosniff");

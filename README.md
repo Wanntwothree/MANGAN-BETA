@@ -25,11 +25,21 @@ $env:DATABASE_PATH = "C:\path\to\mangan.sqlite"
 node server.js
 ```
 
+### Run through XAMPP (Apache)
+
+Apache serves the static frontend from `public/` on port 8080 and proxies
+`/api` to the Node server on port 3198. Start Apache in the XAMPP Control
+Panel, then run `START-XAMPP-BETA.bat` and open <http://localhost:8080>. The
+Node process is still required for the API and SQLite data. Do not open
+`http://localhost/mangan_sia-main/`; the app expects to be served at the web
+root so its `/css`, `/app.js`, and `/api` paths resolve correctly.
+
 ### Admin account
 
-Admin accounts cannot be registered from the public form. Set both environment
-variables before the **first** start; the password must be at least 12
-characters. For a presentation, use a unique local test password:
+Admin accounts cannot be registered from the public form. The app seeds the
+default admin account `admin@mangan.com` / `admin_123` on first start. Override
+both values with environment variables if you need different credentials; the
+password must be between 8 and 128 characters:
 
 ```powershell
 $env:ADMIN_EMAIL = "admin@example.test"
@@ -51,7 +61,8 @@ credentials. For production, configure a proper email provider and HTTPS.
   edited listings remain private until an admin approves them.
 - **Admin:** Sign in with the environment-seeded account to use `/admin.html`.
   Review owner listings, suspend/restore non-admin accounts, and read feedback.
-- **Guest:** Browse and save favorites without creating an account.
+- **Guest:** Browse and save favorites without creating an account; viewing
+  full restaurant details requires signing in.
 
 ## Beta data and pricing
 

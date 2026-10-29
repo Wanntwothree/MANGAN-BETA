@@ -61,7 +61,7 @@ function renderAdminData(data) {
   document.querySelector("#feedback-count").textContent = `${data.stats.feedback} feedback notes received`;
   document.querySelector("#admin-feedback").innerHTML = data.feedback.length ? data.feedback.map((item) => `
     <article class="feedback-item"><header><strong>${adminEscape(item.topic)}</strong><time>${new Date(item.createdAt).toLocaleString("en-PH")}</time></header><p>${adminEscape(item.message)}</p></article>
-  `).join("") : '<p class="dashboard-empty">No beta feedback has arrived yet.</p>';
+  `).join("") : '<p class="dashboard-empty feedback-empty">No beta feedback has arrived yet.</p>';
 }
 
 async function loadAdminData() {

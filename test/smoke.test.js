@@ -280,7 +280,7 @@ test("public restaurant location lookup geocodes once and caches coordinates", a
 
   const unknown = await fetch(`${baseUrl}/api/restaurants/999/location`);
   assert.equal(unknown.status, 404);
-  assert.match((await fetch(`${baseUrl}/`).then((response) => response.text())), /app\.js\?v=6/);
+  assert.match((await fetch(`${baseUrl}/`).then((response) => response.text())), /app\.js\?v=8/);
 });
 
 test("weather API validates coordinates and returns current conditions", async () => {
